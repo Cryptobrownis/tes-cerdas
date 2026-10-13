@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TTS Ala Cak Lontong 🧠</title>
+    <title>TTS teka teki sialan 🧠</title>
     <style>
         * {
             box-sizing: border-box;
@@ -140,39 +140,41 @@
             border-color: #b2bec3;
         }
 
-        /* Overlay Pop-up Feedback (Mikir / Gak Terduga) */
+        /* Overlay Pop-up Feedback (Background Lebih Pekat) */
         .feedback-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.92); /* Background lebih pekat */
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 999;
             display: none;
             animation: fadeIn 0.2s ease;
+            padding: 20px;
         }
 
         .feedback-box {
             text-align: center;
             color: white;
-            padding: 20px;
+            max-width: 350px;
         }
 
         .feedback-title {
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             font-weight: 900;
             letter-spacing: 2px;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            text-shadow: 0 5px 15px rgba(0,0,0,0.8);
             margin-bottom: 10px;
         }
 
         .feedback-desc {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #dfe6e9;
+            line-height: 1.5;
         }
 
         /* Hasil Akhir */
@@ -201,15 +203,15 @@
     <div id="feedbackOverlay" class="feedback-overlay">
         <div class="feedback-box">
             <div id="feedbackTitle" class="feedback-title">MIKIRR!!</div>
-            <div id="feedbackDesc" class="feedback-desc">Penjelasan lucu di sini...</div>
+            <div id="feedbackDesc" class="feedback-desc">Sini gue jelasin...</div>
         </div>
     </div>
 
     <div class="container">
         <!-- 1. MENU AWAL -->
         <div id="start-screen">
-            <h1>🧠 TTS Ala Cak Lontong 🧠</h1>
-            <p class="subtitle">"Pikirkan dengan logika... tapi jangan pakai logika!"</p>
+            <h1>🧠 TTS teka teki sialan 🧠</h1>
+            <p class="subtitle">"Pikir,,,Logikanya dipake!"</p>
             
             <form id="startForm" onsubmit="startGame(event)">
                 <div class="input-group">
@@ -217,7 +219,7 @@
                     <input type="text" id="playerName" placeholder="Cth: Tukul" required>
                 </div>
 
-                <button type="submit">Mulai Bermain 🚀</button>
+                <button type="submit">Mulai aja</button>
             </form>
         </div>
 
@@ -243,25 +245,24 @@
     </div>
 
     <script>
-        // Database 10 Soal TTS Ala Cak Lontong
         const questions = [
             {
-                question: "Matahari terbit dari sebelah...",
-                options: ["Barat", "Timur", "Pagi hari", "Niatnya"],
+                question: "Lorenzo, Marquez, rossi kejar-kejaran, salip menyalip di?",
+                options: ["Sirkuit", "Motor", "Biarin", "Tilang"],
                 correct: 2,
-                reason: "Matahari terbit ya di waktu *pagi hari*, bukan sebelah timur (kalau sebelah timur itu arahnya, bukan waktunya)! MIKIR!"
+                reason: "Ya dibiarin dong, kan lagi balapan aduhh gimana sih! MIKIR!"
             },
             {
-                question: "Sebelum ada lampu, orang-orang di zaman dulu menerangi malam pakai...",
-                options: ["Obor", "Lilin", "Matahari", "Pelita"],
+                question: "Hewan yang sehari-harinya memakan daging, dan hidup di rawa-rawa, namanya?",
+                options: ["Buaya", "Karnovira", "Butuh", "Kerja"],
                 correct: 2,
-                reason: "Zaman dulu malam hari ya gelap gulita, mana ada lampu! Kalau ada matahari ya siang hari dong! MIKIR!"
+                reason: "Butuh dong, Kan dia tinggal dirawa biar ga laper dia sehari-hari makan daging! MIKIR!"
             },
             {
-                question: "Hewan apa yang paling patuh dan disiplin sama peraturan lalu lintas?",
-                options: ["Kuda", "Semut", "Gajah", "Kucing"],
+                question: "Kita tidak bisa menelepon, kalau handphonenya ngga ada?",
+                options: ["Pulsa", "Angka", "Internet", "Suara"],
                 correct: 1,
-                reason: "Semut! Karena kalau jalan selalu berbaris rapi dan tidak pernah ngebut di jalan raya."
+                reason: "Angkaa, kalo gada angka ketik nomernya gimana dah, MIKIRRRRR"
             },
             {
                 question: "Gajah terbang dengan apa?",
@@ -270,40 +271,40 @@
                 reason: "Gajah terbang itu *susah payah* karena badannya berat banget! Mana ada gajah punya sayap."
             },
             {
-                question: "Masuknya pelan, keluarnya basah dan basah kuyup. Apakah itu?",
-                options: ["Hujan-hujanan", "Renang di sungai", "Makan mie rebus", "Masuk ke dalam air"],
+                question: "Bertamu lebih dari 2x24 jam harus? (serius dulu yaa)",
+                options: ["Diam-diam", "Lapor", "Makan", "PIndah"],
                 correct: 2,
-                reason: "Makan mie rebus! Masuk ke mulut pelan-pelan, keluarnya dari tenggorokan udah basah kena kuah."
+                reason: "MAKAN ya MAKAN, 2 hari bertamu yang ada pingsan kalo ga makan."
             },
             {
-                question: "Orang haus minum air putih, kalau orang botak butuh...",
-                options: ["Shampo", "Topi", "Kacamata", "Pikir panjang"],
+                question: "Seseorang yang memimpin sebuah Desa, biasanya di panggil Pak?",
+                options: ["Kades", "Noleh", "Lurah", "Bapak"],
                 correct: 1,
-                reason: "Orang botak butuh *topi* biar kepalanya gak kepanasan terik matahari. Kalau butuh shampo itu orang berambut!"
+                reason: "Orang kalo di panggil pak pasti noleh ya, pak pak pasti noleh, MIKIRR!"
             },
             {
-                question: "Di atas kepala ada rambut, di bawah kaki ada...",
-                options: ["Tanah", "Sandal", "Sepatu", "Kaus kaki"],
+                question: "Saat naik pesawat kita dilarang membawa..?",
+                options: ["Sendiri", "Narkoba", "Sajam", "Bekal"],
                 correct: 0,
-                reason: "Di bawah kaki ya *tanah* (atau lantai), kalau sandal dan sepatu kan alas kaki bukan bagian tubuh!"
+                reason: "kan penumpang buka pilot, kalo naik pesawat ya di larang bawa sendiri, hadehhh!"
             },
             {
-                question: "Kenapa burung terbang ke selatan saat musim dingin?",
-                options: ["Mencari makan", "Kedinginan", "Terlalu jauh kalau jalan kaki", "Ikut rombongan"],
+                question: "Buah yang dipotong-potong, diuleg campur gula jawa dan cabai, jadinya?",
+                options: ["Rujak", "Asinan", "Rusak", "Enak"],
                 correct: 2,
-                reason: "Karena kalau terbang pakai sayap, tapi kalau jalan kaki terlalu jauh jaraknya ke selatan!"
+                reason: "Ya jadi RUSAK dong, kan buah utuh trs di poteng ya di uleg, jadi rusak dong. MIKIRR!"
             },
             {
-                question: "Gigi naga tajam-tajam, kalau gigi nenek...",
-                options: ["Ompong", "Palsu", "Tinggal satu", "Satu biji"],
+                question: "Cermin jika di lap jadi…?",
+                options: ["Cerah", "Palsu", "Silau", "Cermin"],
                 correct: 3,
-                reason: "Gigi nenek itu *satu biji* (di dalam toples di atas meja makan)! MIKIR!"
+                reason: "Ya tetep jadi cermin wkwkwkwk, emg klo di lap bakal jadi apa! MIKIR!"
             },
             {
-                question: "Supaya awet muda dan tidak cepat keriput, kita harus rajin...",
-                options: ["Skincare mahal", "Tidur cukup", "Minum air putih", "Berkaca dari masa lalu"],
+                question: "Burung bisa terbang karena memiliki?",
+                options: ["Bakat", "Turunan", "Sayap", "Keinginan"],
                 correct: 0,
-                reason: "Pakai *skincare mahal* dong! Mana bisa awet muda cuma senyum-senyum sendiri."
+                reason: "karena Punya BAKAT lah, sayap doang kalo gada bakat gabisa terbang."
             }
         ];
 
@@ -357,12 +358,12 @@
             desc.innerText = q.reason;
             overlay.style.display = 'flex';
 
-            // Jeda 2,5 detik lalu otomatis lanjut ke soal berikutnya tanpa mengulang
+            // Durasi diperlama menjadi 4 detik (4000 ms) agar pemain bisa membaca dengan santai
             setTimeout(() => {
                 overlay.style.display = 'none';
                 currentQuestion++;
                 loadQuestion();
-            }, 2500);
+            }, 4000);
         }
 
         function showResult() {
@@ -372,16 +373,15 @@
             document.getElementById('resultPlayerInfo').innerText = `Pemain: ${playerName}`;
             document.getElementById('finalScore').innerText = `${score} / ${questions.length}`;
 
-            // Penentuan Peringkat Berdasarkan Skor Ala Cak Lontong
             let rank = "";
             if (score === 10) {
-                rank = "Peringkat: Profesor Logika Nyeleneh (Sangat Berbahaya!) 🎓✨";
+                rank = "kaisar Ilahi aja kalah cerdasnya sama lu wkwkwk🎓✨";
             } else if (score >= 7) {
-                rank = "Peringkat: Murid Setia Cak Lontong (Lumayan Nyambung) 🧐";
+                rank = "Asli logika Lu Plenger banget, mantap kids 🧐";
             } else if (score >= 4) {
-                rank = "Peringkat: Perlu Banyak Minum Kopi & MIKIR! ☕";
+                rank = "Mikir kidss ☕";
             } else {
-                rank = "Peringkat: Juara Bertahan Gagal Paham 🙃";
+                rank = "istigfar kata gua mah 🙃";
             }
 
             document.getElementById('rankBadge').innerText = rank;
