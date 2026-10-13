@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS Ala Cak Lontong 🧠</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            z-index: 10;
+            text-align: center;
+        }
+
+        h1 {
+            color: #d63031;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            color: #636e72;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #2d3436;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #0984e3;
+            box-shadow: 0 0 5px rgba(9, 132, 227, 0.4);
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #0984e3 0%, #6c5ce7 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(9, 132, 227, 0.4);
+            margin-top: 10px;
+            transition: transform 0.1s ease;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Tampilan Game */
+        #game-screen, #result-screen {
+            display: none;
+        }
+
+        .question-number {
+            font-size: 0.8rem;
+            color: #b2bec3;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            color: #2d3436;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background: #f1f2f6;
+            color: #2d3436;
+            border: 2px solid #dfe6e9;
+            padding: 12px;
+            font-size: 0.9rem;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            box-shadow: none;
+            margin-top: 0;
+        }
+
+        .option-btn:hover {
+            background: #dfe6e9;
+            border-color: #b2bec3;
+        }
+
+        /* Overlay Pop-up Feedback (Mikir / Gak Terduga) */
+        .feedback-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .feedback-box {
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .feedback-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+
+        .feedback-desc {
+            font-size: 1.1rem;
+            color: #dfe6e9;
+        }
+
+        /* Hasil Akhir */
+        .score-box {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #d63031;
+            margin: 10px 0;
+        }
+
+        .rank-badge {
+            background: #ffeaa7;
+            color: #d63031;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin: 15px 0;
+            border: 2px dashed #fdcb6e;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pop-up Feedback Cak Lontong -->
+    <div id="feedbackOverlay" class="feedback-overlay">
+        <div class="feedback-box">
+            <div id="feedbackTitle" class="feedback-title">MIKIRR!!</div>
+            <div id="feedbackDesc" class="feedback-desc">Penjelasan lucu di sini...</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 1. MENU AWAL -->
+        <div id="start-screen">
+            <h1>🧠 TTS Ala Cak Lontong 🧠</h1>
+            <p class="subtitle">"Pikirkan dengan logika... tapi jangan pakai logika!"</p>
+            
+            <form id="startForm" onsubmit="startGame(event)">
+                <div class="input-group">
+                    <label for="playerName">Nama Kamu</label>
+                    <input type="text" id="playerName" placeholder="Cth: Tukul" required>
+                </div>
+
+                <button type="submit">Mulai Bermain 🚀</button>
+            </form>
+        </div>
+
+        <!-- 2. LAYAR GAME -->
+        <div id="game-screen">
+            <div class="question-number" id="qNumber">Soal 1 dari 10</div>
+            <div class="question-text" id="qText">Pertanyaan muncul di sini...</div>
+            <div class="options-container" id="optionsContainer">
+                <!-- Pilihan jawaban di-generate via JavaScript -->
+            </div>
+        </div>
+
+        <!-- 3. LAYAR HASIL AKHIR -->
+        <div id="result-screen">
+            <h1>🏆 Hasil Permainan 🏆</h1>
+            <p class="subtitle" id="resultPlayerInfo">Nama Pemain</p>
+            
+            <div class="score-box" id="finalScore">0 / 10</div>
+            <div class="rank-badge" id="rankBadge">Peringkat: Belum Diuji</div>
+            
+            <button onclick="location.reload()">Main Lagi 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        // Database 10 Soal TTS Ala Cak Lontong
+        const questions = [
+            {
+                question: "Matahari terbit dari sebelah...",
+                options: ["Barat", "Timur", "Pagi hari", "Niatnya"],
+                correct: 2,
+                reason: "Matahari terbit ya di waktu *pagi hari*, bukan sebelah timur (kalau sebelah timur itu arahnya, bukan waktunya)! MIKIR!"
+            },
+            {
+                question: "Sebelum ada lampu, orang-orang di zaman dulu menerangi malam pakai...",
+                options: ["Obor", "Lilin", "Matahari", "Pelita"],
+                correct: 2,
+                reason: "Zaman dulu malam hari ya gelap gulita, mana ada lampu! Kalau ada matahari ya siang hari dong! MIKIR!"
+            },
+            {
+                question: "Hewan apa yang paling patuh dan disiplin sama peraturan lalu lintas?",
+                options: ["Kuda", "Semut", "Gajah", "Kucing"],
+                correct: 1,
+                reason: "Semut! Karena kalau jalan selalu berbaris rapi dan tidak pernah ngebut di jalan raya."
+            },
+            {
+                question: "Gajah terbang dengan apa?",
+                options: ["Sayap", "Baling-baling", "Susah payah", "Helikopter"],
+                correct: 2,
+                reason: "Gajah terbang itu *susah payah* karena badannya berat banget! Mana ada gajah punya sayap."
+            },
+            {
+                question: "Masuknya pelan, keluarnya basah dan basah kuyup. Apakah itu?",
+                options: ["Hujan-hujanan", "Renang di sungai", "Makan mie rebus", "Masuk ke dalam air"],
+                correct: 2,
+                reason: "Makan mie rebus! Masuk ke mulut pelan-pelan, keluarnya dari tenggorokan udah basah kena kuah."
+            },
+            {
+                question: "Orang haus minum air putih, kalau orang botak butuh...",
+                options: ["Shampo", "Topi", "Kacamata", "Pikir panjang"],
+                correct: 1,
+                reason: "Orang botak butuh *topi* biar kepalanya gak kepanasan terik matahari. Kalau butuh shampo itu orang berambut!"
+            },
+            {
+                question: "Di atas kepala ada rambut, di bawah kaki ada...",
+                options: ["Tanah", "Sandal", "Sepatu", "Kaus kaki"],
+                correct: 0,
+                reason: "Di bawah kaki ya *tanah* (atau lantai), kalau sandal dan sepatu kan alas kaki bukan bagian tubuh!"
+            },
+            {
+                question: "Kenapa burung terbang ke selatan saat musim dingin?",
+                options: ["Mencari makan", "Kedinginan", "Terlalu jauh kalau jalan kaki", "Ikut rombongan"],
+                correct: 2,
+                reason: "Karena kalau terbang pakai sayap, tapi kalau jalan kaki terlalu jauh jaraknya ke selatan!"
+            },
+            {
+                question: "Gigi naga tajam-tajam, kalau gigi nenek...",
+                options: ["Ompong", "Palsu", "Tinggal satu", "Satu biji"],
+                correct: 3,
+                reason: "Gigi nenek itu *satu biji* (di dalam toples di atas meja makan)! MIKIR!"
+            },
+            {
+                question: "Supaya awet muda dan tidak cepat keriput, kita harus rajin...",
+                options: ["Skincare mahal", "Tidur cukup", "Minum air putih", "Berkaca dari masa lalu"],
+                correct: 0,
+                reason: "Pakai *skincare mahal* dong! Mana bisa awet muda cuma senyum-senyum sendiri."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let playerName = "";
+
+        function startGame(e) {
+            e.preventDefault();
+            playerName = document.getElementById('playerName').value.trim();
+
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'block';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                showResult();
+                return;
+            }
+
+            let q = questions[currentQuestion];
+            document.getElementById('qNumber').innerText = `Soal ${currentQuestion + 1} dari ${questions.length}`;
+            document.getElementById('qText').innerText = q.question;
+
+            let optionsHTML = "";
+            q.options.forEach((opt, index) => {
+                optionsHTML += `<button class="option-btn" onclick="checkAnswer(${index})">${String.fromCharCode(65 + index)}. ${opt}</button>`;
+            });
+            document.getElementById('optionsContainer').innerHTML = optionsHTML;
+        }
+
+        function checkAnswer(selectedIndex) {
+            let q = questions[currentQuestion];
+            let isCorrect = (selectedIndex === q.correct);
+
+            const overlay = document.getElementById('feedbackOverlay');
+            const title = document.getElementById('feedbackTitle');
+            const desc = document.getElementById('feedbackDesc');
+
+            if (isCorrect) {
+                score++;
+                title.innerText = "GAK TERDUGA!";
+                title.style.color = "#00b894";
+            } else {
+                title.innerText = "MIKIRR!!";
+                title.style.color = "#d63031";
+            }
+
+            desc.innerText = q.reason;
+            overlay.style.display = 'flex';
+
+            // Jeda 2,5 detik lalu otomatis lanjut ke soal berikutnya tanpa mengulang
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                currentQuestion++;
+                loadQuestion();
+            }, 2500);
+        }
+
+        function showResult() {
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+
+            document.getElementById('resultPlayerInfo').innerText = `Pemain: ${playerName}`;
+            document.getElementById('finalScore').innerText = `${score} / ${questions.length}`;
+
+            // Penentuan Peringkat Berdasarkan Skor Ala Cak Lontong
+            let rank = "";
+            if (score === 10) {
+                rank = "Peringkat: Profesor Logika Nyeleneh (Sangat Berbahaya!) 🎓✨";
+            } else if (score >= 7) {
+                rank = "Peringkat: Murid Setia Cak Lontong (Lumayan Nyambung) 🧐";
+            } else if (score >= 4) {
+                rank = "Peringkat: Perlu Banyak Minum Kopi & MIKIR! ☕";
+            } else {
+                rank = "Peringkat: Juara Bertahan Gagal Paham 🙃";
+            }
+
+            document.getElementById('rankBadge').innerText = rank;
+        }
+    </script>
+</body>
+</html>
