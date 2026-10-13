@@ -254,7 +254,7 @@
             },
             {
                 question: "Hewan yang sehari-harinya memakan daging, dan hidup di rawa-rawa, namanya?",
-                options: ["Buaya", "Karnovira", "Butuh", "Kerja"],
+                options: ["Buaya", "Karnivorara", "Butuh", "Kerja"],
                 correct: 2,
                 reason: "Butuh dong, Kan dia tinggal dirawa biar ga laper dia sehari-hari makan daging! MIKIR!"
             },
@@ -272,7 +272,7 @@
             },
             {
                 question: "Bertamu lebih dari 2x24 jam harus? (serius dulu yaa)",
-                options: ["Diam-diam", "Lapor", "Makan", "PIndah"],
+                options: ["Diam-diam", "Lapor", "Makan", "Pindah"],
                 correct: 2,
                 reason: "MAKAN ya MAKAN, 2 hari bertamu yang ada pingsan kalo ga makan."
             },
@@ -358,12 +358,12 @@
             desc.innerText = q.reason;
             overlay.style.display = 'flex';
 
-            // Durasi diperlama menjadi 4 detik (4000 ms) agar pemain bisa membaca dengan santai
+            // Durasi diperlama menjadi 6 detik (6000 ms) agar pemain bisa membaca dengan santai
             setTimeout(() => {
                 overlay.style.display = 'none';
                 currentQuestion++;
                 loadQuestion();
-            }, 4000);
+            }, 6000);
         }
 
         function showResult() {
